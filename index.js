@@ -13,6 +13,7 @@ mongoose.connect('mongodb+srv://lakithrandula6:d6kDa8pAnfyvrMpW@backenddb.y0ollb
 );
 
 app.use(express.json());
+app.use(express.urlencoded({extended: false}));
 
 app.get('/', (req, res) => {
     res.send('Hello from Node API Server Updated.'); 
@@ -46,3 +47,35 @@ app.post('/api/products', async (req, res) => {
     }
 });
 
+app.put('/api/products/:id', async (req, res) => {
+    try{
+        const {id} = req.params;
+        const products = await Product.findByIdAndUpdate(id, req.body);
+
+        if (!products){
+            return res.status(404).json({message: "Product not found!"})
+        }
+
+        const updatedProduct = await Product.findById(id);
+        res.status(200).json(updatedProduct);
+
+    }catch(error){
+        res.status(500).json({message: error.message});
+    }
+});
+
+app.delete('/api/products/:id', async (req, res) => {
+    try{
+        const {id} = req.params;
+        const products = await Product.findByIdAndDelete(id);
+
+        if (!products){
+            return res.status(404).json({message: "Product not found!"})
+        }
+
+        res.status(200).json({msg: "Product deleted successfully!"});
+
+    }catch(error){
+        res.status(500).json({message: error.message});
+    }
+});
