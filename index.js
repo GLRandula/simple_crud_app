@@ -5,13 +5,15 @@ const productRoute = require("./routes/product.route.js");
 const app = express();
 
 mongoose.connect('mongodb+srv://lakithrandula6:d6kDa8pAnfyvrMpW@backenddb.y0ollbh.mongodb.net/Node-API?retryWrites=true&w=majority&appName=BackendDB')
-  .then(() => {
-    console.log('Connected!');
+.then(() => {
+    console.log("Connected to database!");
     app.listen(3000, () => {
-        console.log("Server is running on port 3000");
-        });
-    }
-);
+      console.log("Server is running on port 3000");
+    });
+  })
+  .catch(() => {
+    console.log("Connection failed!");
+  });
 
 // middleware
 app.use(express.json());
